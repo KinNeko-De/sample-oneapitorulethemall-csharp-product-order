@@ -1,6 +1,11 @@
+using Ecommerce.ProductOrder;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddGrpc();
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGrpcService<OrderProductService>();
 
 app.Run();
