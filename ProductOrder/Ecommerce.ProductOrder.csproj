@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Kindatta.Ecommerce.ProductOrder" Version="0.0.1" />
+  </ItemGroup>
+
 </Project>
