@@ -1,0 +1,28 @@
+on:
+    push:
+
+concurrency: ci-${{ github.ref }}
+
+name: ci-ecommerce-product-order
+
+env:
+    csharp_project: ProductOrder/Ecommerce.ProductOrder.csproj
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.x
+    - name: Remove Github nuget source that was added with nuget.config
+      run: dotnet nuget remove source github --configfile nuget.config
+    - name: Add Github nuget source
+      run: dotnet nuget add source https://nuget.pkg.github.com/KinNeko-De/index.json --name github --username KinNeko-De --password ${{secrets.GITHUB_TOKEN}} --store-password-in-clear-text --configfile nuget.config
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.csharp_project }} --configfile nuget.config
+    - name: Build
+      run: |
+        dotnet build ${{ env.csharp_project }} --no-restore -c Release
